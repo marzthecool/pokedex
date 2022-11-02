@@ -1,12 +1,23 @@
 import { useState } from 'react'
 import { useStyles } from '../styles/muiStyles'
-import { Stack, Button, Box, AppBar, Toolbar, Typography, Container, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
+import { Stack, Button, Box, AppBar, Toolbar, Typography, Container, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, ownerDocument } from '@mui/material'
 
 export default function Home({ pokemonData, genders, PokemonByGender, colors, PokemonByColor }) {
   console.log('pokemonData', pokemonData)
 
-  const classes = useStyles();
+  const classes = useStyles()
   const [pokemon, setPokemon] = useState(pokemonData)
+
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 5))
+    setPage(0)
+  }
 
   const genderFilter = (selectedGender) => {
     setPokemon(pokemonData)
@@ -163,20 +174,32 @@ export default function Home({ pokemonData, genders, PokemonByGender, colors, Po
               </TableRow>
             </TableHead>
             <TableBody>
-              {pokemon.map((pokemon, index) => { 
-                return (
-                  <TableRow>
-                    <TableCell>{pokemon.id}</TableCell>
-                    <TableCell sx={{ textTransform: 'capitalize' }}>{pokemon.name}</TableCell>
-                    <TableCell>
-                      <Box>
-                        <img src={pokemon.image_url} alt={pokemon.name} style={{width: '75px', height: '75px'}} />
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-              )})}
+              {pokemon
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((pokemon, index) => { 
+                  return (
+                    <TableRow>
+                      <TableCell>{pokemon.id}</TableCell>
+                      <TableCell sx={{ textTransform: 'capitalize' }}>{pokemon.name}</TableCell>
+                      <TableCell>
+                        <Box>
+                          <img src={pokemon.image_url} alt={pokemon.name} style={{width: '75px', height: '75px'}} />
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
             </TableBody>
           </Table>
+          <TablePagination 
+            rowsPerPageOptions={[5, 10, 100]}
+            component='div'
+            count={pokemon.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </TableContainer>
       </Container>
     </>
