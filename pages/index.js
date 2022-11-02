@@ -1,11 +1,9 @@
 import { useState } from 'react'
-import { useStyles } from '../styles/muiStyles'
 import { Stack, Button, Box, AppBar, Toolbar, Typography, Container, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, ownerDocument } from '@mui/material'
 
 export default function Home({ pokemonData, genders, PokemonByGender, colors, PokemonByColor }) {
   console.log('pokemonData', pokemonData)
 
-  const classes = useStyles()
   const [pokemon, setPokemon] = useState(pokemonData)
 
   const [page, setPage] = useState(0)
