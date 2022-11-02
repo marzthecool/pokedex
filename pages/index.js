@@ -192,7 +192,7 @@ export default function Home({ pokemonData, genders, PokemonByGender, colors, Po
             </TableBody>
           </Table>
           <TablePagination 
-            rowsPerPageOptions={[5, 10, 100]}
+            rowsPerPageOptions={[5]}
             component='div'
             count={pokemon.length}
             rowsPerPage={rowsPerPage}
